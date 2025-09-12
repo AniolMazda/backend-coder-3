@@ -28,4 +28,4 @@ app.use('/api/sessions',sessionsRouter);
 app.use(errorHandler);
 app.use(pathHandler);
 
-
+export default app;
