@@ -1,7 +1,7 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config'
+import {dbConnection,PORTDB} from './utils/dbConnection.js';
 import mocksRouter from './routes/mocks.router.js'
 import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
@@ -11,10 +11,9 @@ import pathHandler from "./middlewares/pathHandler.mid.js";
 import errorHandler from "./middlewares/errorHandler.mid.js";
 
 const app = express();
-const PORT = process.env.PORT||8080;
-const connection = mongoose.connect(process.env.DB_LINK)
+dbConnection();
 
-app.listen(PORT,()=>console.log(`Listening on ${PORT}`))
+app.listen(PORTDB,()=>console.log(`Listening on ${PORTDB}`))
 
 app.use(express.json());
 app.use(cookieParser());

@@ -5,6 +5,10 @@ export default class Pet {
     get = (params) =>{
         return petModel.find(params)
     }
+    
+    getById = (params) =>{
+        return petModel.findById(params);
+    }
 
     getBy = (params) =>{
         return petModel.findOne(params);

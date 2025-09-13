@@ -8,6 +8,10 @@ export default class GenericRepository {
         return this.dao.get(params);
     }
 
+    getById = (params) => {
+        return this.dao.getById(params)
+    }
+
     getBy = (params) =>{
         return this.dao.getBy(params);
     }

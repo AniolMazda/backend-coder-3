@@ -7,6 +7,22 @@ const getAllPets = async(req,res)=>{
     res.send({status:"success",payload:pets})
 }
 
+const getPet = async(req,res)=>{
+    const petId = req.params.pid;
+    try {
+        const pet = await petsService.getById(petId);
+        if (!pet) {
+            return res.status(404).send({ status: "error", error: "Pet not found" });
+        }
+        res.send({ status: "success", payload: pet });
+    } catch (error) {
+        if (error.name === 'CastError') {
+            return res.status(404).send({ status: "error", error: "Pet not found" });
+        }
+        return res.status(500).send({ status: "error", error: "Internal server error" });
+    }
+}
+
 const createPet = async(req,res)=> {
     const {name,specie,birthDate} = req.body;
     if(!name||!specie||!birthDate) return res.status(400).send({status:"error",error:"Incomplete values"})
@@ -45,6 +61,7 @@ const createPetWithImage = async(req,res) =>{
 }
 export default {
     getAllPets,
+    getPet,
     createPet,
     updatePet,
     deletePet,
