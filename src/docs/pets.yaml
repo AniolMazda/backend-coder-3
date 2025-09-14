@@ -1,0 +1,217 @@
+paths:
+  /api/pets:
+    get:
+      summary: Obtiene todas las mascotas
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: Lista de mascotas devuelta exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pet'
+    post:
+      summary: Se crea una nueva mascotas
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pet" 
+      responses:
+        "200":
+          description: Mascota creada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    $ref: '#/components/schemas/Pet'
+        "400":
+          description: Valores incompletos o datos inválidos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Incomplete values
+  /api/pets/{pid}:
+    get:
+      summary: Obtener mascota por ID
+      tags:
+        - Pets
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Mascota encontrada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    $ref: '#/components/schemas/Pet'
+        "404":
+          description: Mascota no encontrada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Pet not found
+    put:
+      summary: Actualiza una mascota por Id
+      tags:
+        - Pets
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID de la mascota a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: George
+      responses:
+        "200":
+          description: Mascota Actualizada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pet" 
+    delete:
+      summary: Eliminar una mascota
+      tags:
+        - Pets
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Mascota eliminada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: pet deleted
+  /api/pets/withimage:
+    post:
+      summary: Crea una mascota con imagen incluida
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pet"
+      responses:
+        "200":
+          description: Mascota creada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    $ref: '#/components/schemas/Pet'
+        "400":
+          description: Valores incompletos o datos inválidos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Incomplete values
+
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del usuario generado por MongoDB.
+          example: "689bc9f3fa2d8fee565e6c71"
+        name:
+          type: string
+          description: Nombre de la mascota
+          example: "Benito"
+        specie:
+          type: string
+          description: Especie de la mascota
+          example: "Dog"
+        birthDate:
+          type: string
+          description: Fecha de nacimiento de la mascota
+          example: "12-30-2000"
+        adopted:
+          type: boolean
+          description: Estado de adopción de la mascota
+          example: false
+        owner:
+          type: string
+          description: Id del dueño de la mascota
+          example: "689bc9f2fa2d8fee565e6c6b"
+        image:
+          type: string
+          description: URL de la imagen de la mascota
+          example: "http://example.com/image.jpg"

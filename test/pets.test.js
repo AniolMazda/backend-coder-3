@@ -1,28 +1,10 @@
 import { expect } from "chai";
 import supertest from "supertest";
-import mongoose from "mongoose";
 import app from "../src/app.js";
-
-import 'dotenv/config'
-
-mongoose.set("strictQuery",true)
 
 const request = supertest(app)
 let testPetId;
 
-before(async function () {
-    this.timeout(5000)
-    if (mongoose.connection.readyState !== 1) {
-        console.log("Conectando a la base de datos de tests...");
-        try {
-            mongoose.connect(process.env.DB_LINK);
-        } catch (error) {
-            console.error("Error al conectar a la base de datos de tests:", error);
-        }
-    } else {
-        console.log("Ya existe una conexión a la base de datos.");
-    }
-});
 describe("Testing Pets Route", function (){
     it("Test para obtener todas las mascotas", async function() {
         const response = await request.get("/api/pets/")
@@ -82,7 +64,3 @@ describe("Testing Pets Route", function (){
         expect(response.body.payload).to.have.property('image').to.include('public/img/');
     });
 });
-after(async function(){
-        await mongoose.connection.close();
-        console.log("Se ha desconectado la base de datos")
-}); 

@@ -1,0 +1,137 @@
+paths:
+  /api/adoptions:
+    get:
+      summary: Obtiene todas las adopciones
+      tags:
+        - Adoptions
+      responses:
+        "200":
+          description: Lista de adopciones devuelta exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Adoption'
+  
+  /api/adoptions/{aid}:
+    get:
+      summary: Obtener una adopción por ID
+      tags:
+        - Adoptions
+      parameters:
+        - in: path
+          name: aid
+          required: true
+          schema:
+            type: string
+            example: "60c841a05c7f8a001c9c9b5f"
+      responses:
+        "200":
+          description: Adopción encontrada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    $ref: '#/components/schemas/Adoption'
+        "404":
+          description: Adopción no encontrada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Adoption not found
+  
+  /api/adoptions/{uid}/{pid}:
+    post:
+      summary: Crea una nueva adopción
+      tags:
+        - Adoptions
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+            example: "60c841a05c7f8a001c9c9b5d"
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+            example: "60c841a05c7f8a001c9c9b5e"
+      responses:
+        "200":
+          description: Mascota adoptada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Pet adopted
+        "400":
+          description: La mascota ya ha sido adoptada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Pet is already adopted
+        "404":
+          description: Usuario o mascota no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: User not found
+  
+components:
+  schemas:
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID de la adopción.
+          example: "60c841a05c7f8a001c9c9b5f"
+        owner:
+          type: string
+          description: ID del dueño de la mascota.
+          example: "689bc9f2fa2d8fee565e6c6b"
+        pet:
+          type: string
+          description: ID de la mascota.
+          example: "689bc9f3fa2d8fee565e6c71"

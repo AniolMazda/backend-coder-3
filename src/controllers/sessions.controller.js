@@ -50,7 +50,12 @@ const unprotectedLogin  = async(req,res) =>{
     if(!user) return res.status(404).send({status:"error",error:"User doesn't exist"});
     const isValidPassword = await passwordValidation(user,password);
     if(!isValidPassword) return res.status(400).send({status:"error",error:"Incorrect password"});
-    const token = jwt.sign(user,'tokenSecretJWT',{expiresIn:"1h"});
+    const getUserToken = {
+        name:`${user.first_name} ${user.last_name}`,
+        role: user.role,
+        email:user.email
+    }
+    const token = jwt.sign(getUserToken,'tokenSecretJWT',{expiresIn:"1h"});
     res.cookie('unprotectedCookie',token,{maxAge:3600000}).send({status:"success",message:"Unprotected Logged in"})
 }
 const unprotectedCurrent = async(req,res)=>{

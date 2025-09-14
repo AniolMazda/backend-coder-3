@@ -1,0 +1,223 @@
+paths:
+  /api/sessions/register:
+    post:
+      summary: Registra un nuevo usuario
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAuthInput'
+      responses:
+        "200":
+          description: Usuario registrado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: string
+                    description: ID del usuario creado.
+                    example: "60c841a05c7f8a001c9c9b5d"
+        "400":
+          description: Valores incompletos o usuario ya existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Incomplete values | User already exists
+
+  /api/sessions/login:
+    post:
+      summary: Inicia sesión de un usuario
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginInput'
+      responses:
+        "200":
+          description: Sesión iniciada exitosamente, con cookie de autenticación.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Logged in
+        "400":
+          description: Valores incompletos o contraseña incorrecta.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Incorrect password
+        "404":
+          description: El usuario no existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: User doesn't exist
+
+  /api/sessions/current:
+    get:
+      summary: Obtiene la información del usuario actual
+      tags:
+        - Sessions
+      description: Devuelve la información del usuario autenticado a través de la cookie.
+      responses:
+        "200":
+          description: Información del usuario devuelta exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    $ref: '#/components/schemas/UserInfo'
+        "401":
+          description: No autorizado. La cookie no es válida o no existe.
+
+  /api/sessions/unprotectedLogin:
+    post:
+      summary: Inicia sesión sin protección adicional (para pruebas)
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginInput'
+      responses:
+        "200":
+          description: Sesión sin protección iniciada exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Unprotected Logged in
+        "400":
+          description: Valores incompletos o contraseña incorrecta.
+        "404":
+          description: El usuario no existe.
+
+  /api/sessions/unprotectedCurrent:
+    get:
+      summary: Obtiene la información del usuario de la sesión no protegida
+      tags:
+        - Sessions
+      responses:
+        "200":
+          description: Información de usuario no protegido devuelta exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    $ref: '#/components/schemas/UserInfo'
+
+components:
+  schemas:
+    UserInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre Completo del Usuario
+          example: Juan Perez
+        role:
+          type: string
+          description: Tipo de Usuario Asignado
+          example: user
+        email:
+          type: string
+          format: email
+          description: Correo Electronico del Usuario
+          example: juan.perez@example.com
+        iat:
+          type: number
+          description: Es el "tiempo de emisión" del token
+          example: 1757887261
+        exp:
+          type: number
+          description: Es el "tiempo de expiración" del token
+          example: 1757890861
+    UserAuthInput:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombres del Usuario
+          example: Juan
+        last_name:
+          type: string
+          description: Apellidos del Usuario
+          example: Pérez
+        email:
+          type: string
+          description: Correo electronico del Usuario
+          example: juan.perez@example.com
+        password:
+          type: string
+          format: password
+          description: Contraseña del usuario que despues se encripta
+          example: "password123"
+    UserLoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Correo electronico del Usuario
+          example: juan.perez@example.com
+        password:
+          type: string
+          format: password
+          description: Contraseña del usuario
+          example: "password123"
