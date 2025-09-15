@@ -136,6 +136,75 @@ paths:
                   message:
                     type: string
                     example: User deleted
+  /api/users/:uid/documents:
+    post:
+      summary: Agregar documentos al usuario
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+            example: "60c841a05c7f8a001c9c9b5d"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Nombre del documento
+                    example: 123124141241-example.pdf
+                  reference:
+                    type: string
+                    description: Dirección donde se guarda el documento
+                    example: D:\CoderHouse\backend-3\src\utils/../public/documents/1757902182103-ejemplo.pdf
+      responses:
+        "200":
+          description: Usuario actualizado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: User updated
+        "400":
+          description: No hay ningun documento subido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: No files uploaded
+        "404":
+          description: Usuario no encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: User not found
 
 components:
   schemas:
@@ -176,3 +245,24 @@ components:
                 type: string
                 description: ID de la mascota asociada.
                 example: "60c841a05c7f8a001c9c9b5d"
+        documents:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Nombre asignado al documento
+                example: 1757902182103-ejemplo.pdf
+              reference:
+                type: string
+                description: Dirección donde esta almacenado el Archivo
+                example: D:\CoderHouse\backend-3\src\utils/../public/documents/1757902182103-ejemplo.pdf
+              _id:
+                type: string
+                description: ID del documento.
+                example: "68c775669fac5bfdb94f5ced"
+        last_connection:
+          type: string
+          description: Fecha de la ultima conexión o logout que tuvo el usuario
+          example: 2022-24-52

@@ -12,7 +12,7 @@ describe("Testing Users Route", function (){
         email: "testuser@example.com",
         password: "testuserpassword"
     };
-    it('Test de resgistro de un nuevo usuario', async () => {
+    it('Test de registro de un nuevo usuario', async () => {
         const response = await request.post('/api/sessions/register').send(testUser);
         expect(response.status).to.equal(200);
         expect(response.body).to.have.property('status').equal('success');

@@ -9,6 +9,7 @@ import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
 import adoptionsRouter from './routes/adoption.router.js';
 import sessionsRouter from './routes/sessions.router.js';
+import addLogger from './middlewares/logger.mid.js';
 import pathHandler from "./middlewares/pathHandler.mid.js";
 import errorHandler from "./middlewares/errorHandler.mid.js";
 
@@ -41,6 +42,7 @@ const swaggerConfig = {
 const swaggerDocs = swaggerJSDoc(swaggerConfig)
 app.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
+app.use(addLogger);
 app.use('/api/mocks',mocksRouter);
 app.use('/api/users',usersRouter);
 app.use('/api/pets',petsRouter);

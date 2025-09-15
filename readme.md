@@ -18,4 +18,4 @@ Sigue estos pasos para descargar la imagen y ejecutar el contenedor en tu máqui
 Usa el comando `docker pull` para descargar la imagen directamente desde Docker Hub.
 
 ```bash
-docker pull aniolmazda/backendcoder-3:1.0
+docker pull aniolmazda/backendcoder-3:1.1
